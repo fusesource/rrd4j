@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.rrd4j</groupId>
+    <groupId>org.fusesource.rrd4j</groupId>
     <artifactId>rrd4j</artifactId>
     <name>RRD4J</name>
     <packaging>jar</packaging>
@@ -10,18 +10,21 @@
     <description>A high performance data logging and graphing system for time series data.</description>
     <url>http://code.google.com/p/rrd4j/</url>
 
-    <!-- Use the Sonatype parent to be able to sync to central. -->
     <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>5</version>
+      <groupId>org.fusesource</groupId>
+      <artifactId>fusesource-pom</artifactId>
+      <version>1.5</version>
     </parent>
 
     <properties>
+        <forge-project-id>rrd4j</forge-project-id>
+        <release-altGitURL>scm:git:ssh://git@github.com:fusesource/rrd4j.git</release-altGitURL>
+
         <!-- The project should have a source encoding set. -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- The javadoc plugin version is set here to avoid duplication. -->
         <mavenJavadocPluginVersion>2.7</mavenJavadocPluginVersion>
+
     </properties>
 
     <licenses>
@@ -31,12 +34,12 @@
         </license>
     </licenses>
 
+
     <scm>
-        <!-- See http://maven.apache.org/plugins/maven-release-plugin/examples/perform-release.html -->
-        <!-- for how to perform a release from the connection below. -->
-        <connection>scm:svn:https://rrd4j.googlecode.com/svn/tags/2.0.7</connection>
-        <developerConnection>scm:svn:https://rrd4j.googlecode.com/svn/tags/2.0.7</developerConnection>
-        <url>http://code.google.com/p/rrd4j/source/browse/#svn/tags/2.0.7</url>
+      <connection>scm:git:git://github.com/fusesource/rrd4j.git</connection>
+      <!-- Work around for issue: http://jira.codehaus.org/browse/SCM-444 -->
+      <developerConnection>${release-altGitURL}</developerConnection>
+      <url>https://github.com/fusesource/rrd4j/tree/master</url>
     </scm>
 
     <dependencies>
@@ -301,17 +304,26 @@
             </plugin>
         </plugins>
     </reporting>
-
-    <repositories>
-        <repository>
-            <!-- The BerkeleyDB dependency is found here. -->
-            <id>oracleReleases</id>
-            <name>Oracle Released Java Packages</name>
-            <url>http://download.oracle.com/maven</url>
-            <layout>default</layout>
-        </repository>
-    </repositories>
-
+    
+    <profiles>
+      <!-- enables extra repositories which may have some
+           goodies that have not reached central yet -->
+      <profile>
+        <id>download</id>
+        
+        <repositories>
+            <repository>
+                <!-- The BerkeleyDB dependency is found here. -->
+                <id>oracleReleases</id>
+                <name>Oracle Released Java Packages</name>
+                <url>http://download.oracle.com/maven</url>
+                <layout>default</layout>
+            </repository>
+        </repositories>
+    
+      </profile>
+    </profiles>
+      
     <developers>
         <developer>
             <name>Sasa Markovic</name>
